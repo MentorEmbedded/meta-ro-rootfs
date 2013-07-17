@@ -1,6 +1,11 @@
 read-only-rootfs support enhancements Yocto layer
 =================================================
 
+This layer depends on:
+
+URI: git://git.openembedded.org/openembedded-core
+Branch: master
+
 Contributing
 ------------
 
