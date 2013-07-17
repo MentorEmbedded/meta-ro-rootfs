@@ -1,0 +1,16 @@
+read-only-rootfs support enhancements Yocto layer
+=================================================
+
+Contributing
+------------
+
+URL: https://github.com/MentorEmbedded/meta-ro-rootfs
+
+To contribute to this layer, please fork and submit pull requests to the above
+repository with github, or open issues for any bugs you find, or feature
+requests you have.
+
+Content review
+--------------
+
+- systemd: split out systemd-tmpfiles into its own package
