@@ -14,3 +14,9 @@ Content review
 --------------
 
 - systemd: split out systemd-tmpfiles into its own package
+
+- disabled/
+
+    This directory contains various problematic bits. The implementation is
+    wrong, but they're a reminder of the software and paths that need
+    handling.

@@ -1,0 +1,31 @@
+---
+ src/daemon/main.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+--- pulseaudio-3.0.orig/src/daemon/main.c
++++ pulseaudio-3.0/src/daemon/main.c
+@@ -208,8 +208,23 @@ static int change_user(void) {
+     }
+ 
+     if (pa_make_secure_dir(PA_SYSTEM_STATE_PATH, 0700, pw->pw_uid, gr->gr_gid, TRUE) < 0) {
++        int errno_save = errno;
+         pa_log(_("Failed to create '%s': %s"), PA_SYSTEM_STATE_PATH, pa_cstrerror(errno));
+-        return -1;
++
++        if (errno_save == EROFS) {
++            pa_log(_("Create state dir at /var/volatile/lib/pulse."));
++
++            if (pa_make_secure_dir("/var/volatile/lib/pulse", 0700, pw->pw_uid, gr->gr_gid, TRUE) < 0) {
++                pa_log(_("Failed to create '%s': %s"), "/var/volatile/lib/pulse", pa_cstrerror(errno));
++                return -1;
++            } else {
++                pa_set_env("PULSE_CONFIG_PATH", "/var/volatile/lib/pulse");
++                pa_set_env("PULSE_STATE_PATH", "/var/volatile/lib/pulse");
++                pa_log(_("Created state dir at /var/volatile/lib/pulse."));
++            }
++        } else {
++            return -1;
++        }
+     }
+ 
+     /* We don't create the config dir here, because we don't need to write to it */
