@@ -1,7 +1,18 @@
+FILESEXTRAPATHS_prepend := "${THISDIR}/systemd:"
+SRC_URI += "\
+    file://tmpfiles-sysroot.patch \
+    file://update-tmpfiles \
+"
+
+do_install_append () {
+    install -m 0755 ${WORKDIR}/update-tmpfiles ${D}${base_bindir}/
+}
+
 PACKAGES =+ "${PN}-tmpfiles"
 
 FILES_${PN}-tmpfiles = "\
     ${base_bindir}/systemd-tmpfiles \
+    ${base_bindir}/update-tmpfiles \
     ${sysconfdir}/tmpfiles.d \
     ${libdir}/tmpfiles.d \
     ${base_libdir}/systemd/system/systemd-tmpfiles* \

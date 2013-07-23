@@ -19,6 +19,7 @@ Content review
 --------------
 
 - systemd: split out systemd-tmpfiles into its own package
+- systemd-tmpfiles: standalone recipe for native and non-systemd images
 
 - disabled/
 
