@@ -9,4 +9,4 @@
   resolvconf case. as it generates it from templates and other sources.
 
 - Convert each bbappend in disabled/ to follow the same pattern as dbus.
-  See README.md for the steps to follow.
+  See [README.md](README.md) for the steps to follow.
