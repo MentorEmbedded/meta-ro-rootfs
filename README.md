@@ -35,7 +35,7 @@ Content review
   - stop shipping /var/lib/dbus in the binary package
   - ship /usr/lib/tmpfiles.d/dbus.conf which ensures that /var/lib/dbus is
   created with appropriate permissions and ownership
-  - ship /etc/tmpfiles.d/dbus.conf in dbus-volatiles binary package, which
+  - ship /etc/tmpfiles.d/dbus.conf in dbus-volatile binary package, which
   is used instead of the one in /usr/lib/tmpfiles.d, which creates
   /var/volatile/lib/dbus and symlinks /var/lib/dbus to it
 
