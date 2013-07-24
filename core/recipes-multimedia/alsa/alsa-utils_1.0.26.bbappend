@@ -3,7 +3,7 @@
 
 inherit volatile
 
-volatile_var_dirs += "lib/${PN}"
+volatile_var_dirs += "lib/alsa"
 
 # Both alsaconf and alsactl need /var/lib/alsa, to store state
 PACKAGES =+ "${PN}-common"
