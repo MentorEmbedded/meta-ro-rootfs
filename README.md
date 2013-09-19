@@ -9,6 +9,11 @@ doesn't try to write to /www, and a couple other misc changes. It also holds
 remnants from an initial move toward consolidating the systemd tmpfiles.d and
 sysvinit volatiles mechanisms.
 
+Note that our ro-binds recipe installs configuration which mount-binds uses to
+set up the writable paths. To add a new path to be made writable, either
+a file or a directory, create a new file in /etc/binds.d/ with lines like this:
+`/var/volatile/lib /var/lib`.
+
 This layer depends on:
 
 URI: git://git.openembedded.org/openembedded-core
