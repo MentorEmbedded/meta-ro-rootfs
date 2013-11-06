@@ -2,17 +2,20 @@ read-only-rootfs support enhancements Yocto layer
 =================================================
 
 This layer holds fixes for read-only-rootfs support that were needed by Mentor
-Graphics Corporation. Currently, it contains a recipe which implements the
-equivalent of the current sysvinit read-only-rootfs hook for systemd, to be
-installed into read-only-rootfs images, a bbappend to fix lighttpd so it
-doesn't try to write to /www, and a couple other misc changes. It also holds
-remnants from an initial move toward consolidating the systemd tmpfiles.d and
-sysvinit volatiles mechanisms.
+Graphics Corporation. The biggest change was handling read-only-rootfs for
+systemd images.
 
-Note that our ro-binds recipe installs configuration which mount-binds uses to
-set up the writable paths. To add a new path to be made writable, either
-a file or a directory, create a new file in /etc/binds.d/ with lines like this:
-`/var/volatile/lib /var/lib`.
+We provide a `read_only_rootfs_systemd.bbclass`, which ensures that the fstab
+in the image gets switched to 'ro', the way it does with sysvinit images.
+
+We also provide a volatile-binds recipe, which generates service files for
+bind mounts to ensure that certain areas are writable, much like the sysvinit
+read-only-rootfs hook does. This is data driven, however, and also makes
+/media writable by default. Note that changes written to these areas will not
+persist, as the bind mounts utilize /var/volatile, which is tmpfs.
+
+The final piece in here is recipe bbappends to fix behavior regarding
+read-only-rootfs, and thus far we've only needed one: lighttpd.
 
 This layer depends on:
 
@@ -32,9 +35,15 @@ Usage
 -----
 
 1. Add this layer to `BBLAYERS` in bblayers.conf
-2. Enable read-only-rootfs for your images, by adding this to local.conf: `EXTRA_IMAGE_FEATURES += "read-only-rootfs"`
-3. Set up the mount-binds recipe to be included in the image for
-   read-only-rootfs images (this is a temporary mechanism, intended to be
-   replaced either with changes to image.bbclass, or aligning more closely
-   with what sysvinit is doing): `IMAGE_INSTALL_append = " ${@'ro-binds' if
-   'read-only-rootfs' in IMAGE_FEATURES.split() and 'systemd'`
+2. If building systemd images, ensure that / is mounted r/o when using
+   read-only-rootfs by adding this to local.conf, or your distro .conf:
+
+    INHERIT += "read_only_rootfs_systemd"
+3. Enable read-only-rootfs for your images, by adding this to local.conf:
+
+    EXTRA_IMAGE_FEATURES += "read-only-rootfs"
+
+If the default writable areas (/var/lib, /home/root, and /media) are
+insufficient, you can add additional bind mount directories. For example:
+
+    VOLATILE_BINDS_append = "/var/volatile/www /www\n"
