@@ -15,6 +15,7 @@ VOLATILE_BINDS ?= "\
     /var/volatile/lib /var/lib\n\
     /var/volatile/root-home ${ROOT_HOME}\n\
     /var/volatile/media /media\n\
+    /var/volatile/resolv.conf /etc/resolv.conf\n\
 "
 VOLATILE_BINDS[type] = "list"
 VOLATILE_BINDS[separator] = "\n"
