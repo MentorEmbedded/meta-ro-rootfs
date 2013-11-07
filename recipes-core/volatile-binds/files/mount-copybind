@@ -27,7 +27,7 @@ if [ -d "$mountpoint" ]; then
     fi
 elif [ -f "$mountpoint" ]; then
     if [ ! -f "$spec" ]; then
-        touch "$spec"
+        cp -pP "$mountpoint" "$spec"
     fi
 fi
 

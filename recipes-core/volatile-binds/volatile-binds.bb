@@ -42,6 +42,7 @@ do_compile () {
         servicefile="${spec#/}"
         servicefile="${servicefile//\//-}.service"
         sed -e "s#@what@#$spec#g; s#@where@#$mountpoint#g" \
+            -e "s#@whatparent@#${spec%/*}#g; s#@whereparent@#${mountpoint%/*}#g" \
             volatile-binds.service.in >$servicefile
     done <<END
 ${@d.getVar('VOLATILE_BINDS', True).replace("\\n", "\n")}

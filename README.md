@@ -39,11 +39,13 @@ Usage
    read-only-rootfs by adding this to local.conf, or your distro .conf:
 
     INHERIT += "read_only_rootfs_systemd"
+
 3. Enable read-only-rootfs for your images, by adding this to local.conf:
 
     EXTRA_IMAGE_FEATURES += "read-only-rootfs"
 
 If the default writable areas (/var/lib, /home/root, and /media) are
-insufficient, you can add additional bind mount directories. For example:
+insufficient, you can add additional bind mounts for files or directories. Examples:
 
     VOLATILE_BINDS_append = "/var/volatile/www /www\n"
+    VOLATILE_BINDS_append = "/var/volatile/rsyncd.conf /etc/rsyncd.conf\n"
