@@ -41,7 +41,7 @@ do_compile () {
         fi
 
         servicefile="${spec#/}"
-        servicefile="${servicefile//\//-}.service"
+        servicefile="$(echo "$servicefile" | tr / -).service"
         sed -e "s#@what@#$spec#g; s#@where@#$mountpoint#g" \
             -e "s#@whatparent@#${spec%/*}#g; s#@whereparent@#${mountpoint%/*}#g" \
             volatile-binds.service.in >$servicefile
