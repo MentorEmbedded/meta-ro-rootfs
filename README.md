@@ -1,21 +1,9 @@
 read-only-rootfs support enhancements Yocto layer
 =================================================
 
-This layer holds fixes for read-only-rootfs support that were needed by Mentor
-Graphics Corporation. The biggest change was handling read-only-rootfs for
-systemd images.
-
-We provide a `read_only_rootfs_systemd.bbclass`, which ensures that the fstab
-in the image gets switched to 'ro', the way it does with sysvinit images.
-
-We also provide a volatile-binds recipe, which generates service files for
-bind mounts to ensure that certain areas are writable, much like the sysvinit
-read-only-rootfs hook does. This is data driven, however, and also makes
-/media writable by default. Note that changes written to these areas will not
-persist, as the bind mounts utilize /var/volatile, which is tmpfs.
-
-The final piece in here is recipe bbappends to fix behavior regarding
-read-only-rootfs, and thus far we've only needed one: lighttpd.
+This layer held fixes for read-only-rootfs support that were needed by Mentor
+Graphics Corporation. This layer is no longer necessary given the support from
+upstream oe-core.
 
 This layer depends on:
 
@@ -35,18 +23,12 @@ Usage
 -----
 
 1. Add this layer to `BBLAYERS` in bblayers.conf
-2. If building systemd images, ensure that / is mounted r/o when using
-   read-only-rootfs by adding this to local.conf, or your distro .conf:
-
-    INHERIT += "read_only_rootfs_systemd"
-
-3. Enable read-only-rootfs for your images, by adding this to local.conf:
+2. Enable read-only-rootfs for your images, by adding this to local.conf:
 
     EXTRA_IMAGE_FEATURES += "read-only-rootfs"
 
-If the default writable paths (/var/lib, /home/root, /media, and /etc/resolv.conf)
-are insufficient, you can add additional bind mounts for files or directories.
-Examples:
+If the default writable paths are insufficient, you can add additional bind
+mounts for files or directories. Examples:
 
     VOLATILE_BINDS_append = "/var/volatile/www /www\n"
     VOLATILE_BINDS_append = "/var/volatile/rsyncd.conf /etc/rsyncd.conf\n"
